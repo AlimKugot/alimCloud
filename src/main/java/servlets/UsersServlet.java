@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-@WebServlet("/signUp")
-public class SignUpServlet extends HttpServlet {
-    private UsersDao usersDao;
+@WebServlet("/users")
+public class UsersServlet extends HttpServlet {
+    UsersDao usersDao;
 
     @Override
     public void init() throws ServletException {
@@ -40,28 +40,13 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp").forward(req, resp);
+        List<User> userList = usersDao.findAll();
+        req.setAttribute("usersFromServer", userList);
+        req.getServletContext().getRequestDispatcher("/jsp/users");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName = req.getParameter("username");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        if (userName == null || email == null || password == null) {
-            //todo : write normal exception
-            req.getServletContext().getRequestDispatcher("/jsp/users.jsp").forward(req, resp);
-        }
-
-        User user = new User.Builder()
-                .setUserName(userName)
-                .setEmail(email)
-                .setPassword(password)
-                .build();
-        usersDao.save(user);
-
-        List<User> userList = usersDao.findAll();
-        req.setAttribute("usersFromServer", userList);
-        req.getServletContext().getRequestDispatcher("/jsp/users.jsp").forward(req, resp);
+        super.doPost(req, resp);
     }
 }

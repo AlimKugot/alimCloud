@@ -1,0 +1,7 @@
+todo:
+    - AUTOINCREMENT IN ID SQL, WE NEED TO DO THE SAME IN THE JAVA OOP
+    - add cookies
+    - add unitTests
+    - add logging
+    - welcome page
+    - file/class to hold sql_queries
