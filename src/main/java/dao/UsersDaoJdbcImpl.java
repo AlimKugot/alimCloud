@@ -1,5 +1,6 @@
 package dao;
 
+import database.SQLQueries;
 import model.User;
 
 import javax.sql.DataSource;
@@ -13,13 +14,20 @@ import java.util.Optional;
 
 public class UsersDaoJdbcImpl implements UsersDao {
     private final Connection connection;
-    //language=SQL
-    protected String SQL_SELECT_ALL = "SELECT * FROM users";
-    //language=SQL
-    protected String SQL_SELECT_BY_EMAIL = "SELECT * FROM uses WHERE email = ?";
-    //language=SQL
-    protected String SQL_INSERT_INTO_USERS = "INSERT INTO users(username, email, password)  " +
-            "VALUES (?, ?, ?)";
+    private static final String SQL_SELECT_ALL;
+    private static final String SQL_SELECT_BY_EMAIL;
+    private static final String SQL_INSERT_INTO_USERS;
+    private static final String SQL_DELETE_BY_EMAIL;
+    private static final String SQL_UPDATE_EMAIL;
+
+    static {
+        SQLQueries queries = new SQLQueries();
+        SQL_SELECT_ALL = queries.getSQL_SELECT_ALL();
+        SQL_SELECT_BY_EMAIL = queries.getSQL_SELECT_BY_EMAIL();
+        SQL_INSERT_INTO_USERS = queries.getSQL_INSERT_INTO_USERS();
+        SQL_DELETE_BY_EMAIL = queries.getSQL_DELETE_BY_EMAIL();
+        SQL_UPDATE_EMAIL = queries.getSQL_UPDATE_EMAIL();
+    }
 
     public UsersDaoJdbcImpl(DataSource dataSource) {
         try {
@@ -32,6 +40,7 @@ public class UsersDaoJdbcImpl implements UsersDao {
     public UsersDaoJdbcImpl(Connection connection) {
         this.connection = connection;
     }
+
 
     @Override
     public Optional<User> find(String email) {
@@ -72,12 +81,30 @@ public class UsersDaoJdbcImpl implements UsersDao {
 
     @Override
     public void update(User model) {
-
+        //todo : I don't know, what I need to change
     }
+
+    private void updateEmail(String oldEmail, String newEmail) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_EMAIL);
+            ps.setString(1, oldEmail);
+            ps.setString(2, newEmail);
+            ps.executeUpdate();
+        } catch (SQLException sqlException) {
+            throw new IllegalStateException(sqlException);
+        }
+    }
+
 
     @Override
     public void delete(String email) {
-
+        try  {
+            PreparedStatement ps = connection.prepareStatement(SQL_DELETE_BY_EMAIL);
+            ps.setString(1, email);
+            ps.executeUpdate();
+        } catch (SQLException sqlException) {
+            throw new IllegalStateException(sqlException);
+        }
     }
 
     @Override

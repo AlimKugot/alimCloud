@@ -1,7 +1,5 @@
 todo:
-    - AUTOINCREMENT IN ID SQL, WE NEED TO DO THE SAME IN THE JAVA OOP
-    - add cookies
-    - add unitTests
-    - add logging
-    - welcome page
+    - AUTOINCREMENT IN ID SQL, MAYBE WE NEED TO DO THE SAME IN THE JAVA OOP
+    - merge sign IN and Up in to one jsp file
     - file/class to hold sql_queries
+    - add authorization from another services (like google, facebook...)

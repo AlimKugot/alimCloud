@@ -3,8 +3,9 @@ package servlets;
 import dao.UsersDao;
 import dao.UsersDaoJdbcImpl;
 import database.InitDatabase;
-import model.User;
+import database.LoginConfirm;
 import security.Crypto;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,11 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/signUp")
-public class SignUpServlet extends HttpServlet {
-    private UsersDao usersDao;
+@WebServlet("/signIn")
+public class SignInServlet extends HttpServlet {
+    UsersDao usersDao;
 
     @Override
     public void init() throws ServletException {
@@ -26,25 +26,24 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp").forward(req, resp);
+        req.getServletContext().getRequestDispatcher("/jsp/signIn.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName = req.getParameter("username");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        if (userName != null && email != null && password != null) {
-            User user = new User.Builder()
-                    .setUserName(userName)
-                    .setEmail(email)
-                    .setPassword(password)
-                    .build();
-            usersDao.save(user);
+
+        String servletPath = req.getServletContext().getContextPath();
+        String servletUrl;
+        if (LoginConfirm.confirmEmailAndPassword(email,password)) {
+            servletUrl = "/home";
             HttpSession session = req.getSession();
             session.setAttribute("AuthorizationToken", Crypto.hashPasswordBcrypt(email));
+        } else {
+            servletUrl = "/signIn";
         }
-        String contextPath = getServletContext().getContextPath();
-        resp.sendRedirect( contextPath + "/home");
+        String redirect = resp.encodeRedirectURL(servletPath + servletUrl);
+        resp.sendRedirect(redirect);
     }
 }

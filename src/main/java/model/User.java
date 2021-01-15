@@ -1,6 +1,6 @@
 package model;
 
-import helperStatic.SignUpAndIn;
+import security.Crypto;
 
 //pattern builder
 public class User {
@@ -54,7 +54,7 @@ public class User {
         }
 
         public Builder setPassword(String password) {
-            this.password = SignUpAndIn.hashPasswordBcrypt(password);
+            this.password = Crypto.hashPasswordBcrypt(password);
             return this;
         }
 
