@@ -1,34 +1,21 @@
 package dao;
 
-import database.SQLQueries;
 import model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UsersDaoJdbcImpl implements UsersDao {
+
+@Component
+public class UsersDaoJdbcImpl extends UsersDao {
     private final Connection connection;
-    private static final String SQL_SELECT_ALL;
-    private static final String SQL_SELECT_BY_EMAIL;
-    private static final String SQL_INSERT_INTO_USERS;
-    private static final String SQL_DELETE_BY_EMAIL;
-    private static final String SQL_UPDATE_EMAIL;
 
-    static {
-        SQLQueries queries = new SQLQueries();
-        SQL_SELECT_ALL = queries.getSQL_SELECT_ALL();
-        SQL_SELECT_BY_EMAIL = queries.getSQL_SELECT_BY_EMAIL();
-        SQL_INSERT_INTO_USERS = queries.getSQL_INSERT_INTO_USERS();
-        SQL_DELETE_BY_EMAIL = queries.getSQL_DELETE_BY_EMAIL();
-        SQL_UPDATE_EMAIL = queries.getSQL_UPDATE_EMAIL();
-    }
-
+    @Autowired
     public UsersDaoJdbcImpl(DataSource dataSource) {
         try {
             connection = dataSource.getConnection();
@@ -36,11 +23,6 @@ public class UsersDaoJdbcImpl implements UsersDao {
             throw new IllegalStateException(sqlException);
         }
     }
-
-    public UsersDaoJdbcImpl(Connection connection) {
-        this.connection = connection;
-    }
-
 
     @Override
     public Optional<User> find(String email) {
@@ -51,7 +33,7 @@ public class UsersDaoJdbcImpl implements UsersDao {
 
             if (resultSet.next()) {
                 String userName = resultSet.getString("username");
-                Integer id = resultSet.getInt("id");
+                long id = resultSet.getLong("id");
 
                 User user = new User.Builder()
                         .setId(id)
@@ -69,11 +51,13 @@ public class UsersDaoJdbcImpl implements UsersDao {
     @Override
     public void save(User model) {
         try {
-            PreparedStatement ps = connection.prepareStatement(SQL_INSERT_INTO_USERS);
-            ps.setString(1, model.getUserName());
-            ps.setString(2, model.getEmail());
-            ps.setString(3, model.getPassword());
-            ps.executeUpdate();
+            if (find(model.getEmail()).isEmpty()) {
+                PreparedStatement ps = connection.prepareStatement(SQL_INSERT_INTO_USERS);
+                ps.setString(1, model.getUserName());
+                ps.setString(2, model.getEmail());
+                ps.setString(3, model.getPassword());
+                ps.executeUpdate();
+            }
         } catch (SQLException sqlException) {
             throw new IllegalStateException(sqlException);
         }
@@ -99,22 +83,26 @@ public class UsersDaoJdbcImpl implements UsersDao {
     @Override
     public void delete(String email) {
         try  {
-            PreparedStatement ps = connection.prepareStatement(SQL_DELETE_BY_EMAIL);
-            ps.setString(1, email);
-            ps.executeUpdate();
+            if (find(email).isPresent()) {
+                PreparedStatement ps = connection.prepareStatement(SQL_DELETE_BY_EMAIL);
+                ps.setString(1, email);
+                ps.executeUpdate();
+            }
         } catch (SQLException sqlException) {
             throw new IllegalStateException(sqlException);
         }
     }
 
+
+
     @Override
     public List<User> findAll() {
-        try (PreparedStatement ps = connection.prepareStatement(SQL_SELECT_ALL);
-             ResultSet resultSet = ps.executeQuery()) {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL)) {
             List<User> userList = new ArrayList<>();
 
             while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
+                long id = resultSet.getLong("id");
                 String userName = resultSet.getString("username");
                 String email = resultSet.getString("email");
 

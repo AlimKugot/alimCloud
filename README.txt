@@ -5,6 +5,7 @@ What briefly does my project:
 
 Technologies in my project:
 - Java 10
+- Spring Core(beans)
 - JSP/Servlets
 - JDBC
 - JUNIT5

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="jdbc:postgresql://localhost:5432/postgres"/>
+        <property name="username" value="alim"/>
+        <property name="password"  value="00962192"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+    </bean>
+
+    <bean id="usersDao" class="dao.UsersDao" abstract="true"/>
+    <bean id="usersDaoImpl" class="dao.UsersDaoJdbcTemplateImpl"/>
+</beans>

@@ -1,9 +1,10 @@
 package servlets;
 
 import dao.UsersDao;
-import dao.UsersDaoJdbcImpl;
-import database.InitDatabase;
 import model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import security.Crypto;
 
 import javax.servlet.ServletException;
@@ -13,16 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
+    @Autowired
     private UsersDao usersDao;
-
-    @Override
-    public void init() throws ServletException {
-        usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,7 +26,7 @@ public class SignUpServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String userName = req.getParameter("username");
         String email = req.getParameter("email");
         String password = req.getParameter("password");

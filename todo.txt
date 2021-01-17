@@ -1,5 +1,7 @@
-todo:
-    - AUTOINCREMENT IN ID SQL, MAYBE WE NEED TO DO THE SAME IN THE JAVA OOP
+todo now:
+   - Make IoC for initDatabase
+   - add mockito tests to Add IoC for UsersDao tests with all impls
+
+todo :
     - merge sign IN and Up in to one jsp file
-    - file/class to hold sql_queries
     - add authorization from another services (like google, facebook...)

@@ -1,9 +1,10 @@
 package servlets;
 
 import dao.UsersDao;
-import dao.UsersDaoJdbcImpl;
-import database.InitDatabase;
-import database.LoginConfirm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import security.LoginConfirm;
 import security.Crypto;
 
 
@@ -17,12 +18,8 @@ import java.io.IOException;
 
 @WebServlet("/signIn")
 public class SignInServlet extends HttpServlet {
+    @Autowired
     UsersDao usersDao;
-
-    @Override
-    public void init() throws ServletException {
-        usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,7 +27,7 @@ public class SignInServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 

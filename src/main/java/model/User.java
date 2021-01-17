@@ -1,44 +1,30 @@
 package model;
 
+import lombok.Getter;
 import security.Crypto;
 
-//pattern builder
+@Getter
 public class User {
-    private final Integer id;
+    private final long id;
     private final String userName;
     private final String email;
     private final String password;
 
-    private User(Integer id, String userName, String email, String password) {
+    //todo: problems with @lombok.builder
+    private User(long id, String userName, String email, String password) {
         this.id = id;
         this.userName = userName;
         this.email = email;
         this.password = password;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
     public static class Builder {
-        private Integer id;
+        private long id;
         private String userName;
         private String email;
         private String password;
 
-        public Builder setId(Integer id) {
+        public Builder setId(long id) {
             this.id = id;
             return this;
         }
