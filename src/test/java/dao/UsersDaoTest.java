@@ -1,4 +1,4 @@
-package Registration;
+package dao;
 
 import dao.UsersDaoJdbcImpl;
 import database.InitDatabase;

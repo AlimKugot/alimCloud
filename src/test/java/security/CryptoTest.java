@@ -1,11 +1,11 @@
-package Registration;
+package security;
 
 import org.junit.jupiter.api.Test;
 import security.Crypto;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SecurityTest {
+public class CryptoTest {
     @Test
     public void checkCrypto() {
         String rawPassword = "qwerty007";

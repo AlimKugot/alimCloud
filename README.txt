@@ -4,7 +4,7 @@ What briefly does my project:
 3) redirect to Already registered userList
 
 Technologies in my project:
-- Java 10
+- Java 8
 - JSP/Servlets
 - JDBC
 - JUNIT5
