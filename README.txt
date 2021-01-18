@@ -4,8 +4,7 @@ What briefly does my project:
 3) redirect to home page
 
 Technologies in my project:
-- Java 10
-- Spring Core(beans)
+- Java 8
 - JSP/Servlets
 - JDBC
 - JUNIT5
