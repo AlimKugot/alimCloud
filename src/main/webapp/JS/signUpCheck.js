@@ -1,5 +1,5 @@
 const alertRedInput = "#8C1010";
-const defaultInput = "rgba(10, 180, 180, 1)";
+const defaultInput = "#0f7ef1";
 
 function userNameValidation(usernameInput) {
     const username = document.getElementById("username");

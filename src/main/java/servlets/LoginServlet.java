@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/signIn")
-public class SignInServlet extends HttpServlet {
+@WebServlet("/login")
+public class LoginServlet extends HttpServlet {
     UsersDao usersDao;
 
     @Override
@@ -26,7 +26,7 @@ public class SignInServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/jsp/signIn.jsp").forward(req, resp);
+        req.getServletContext().getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
     }
 
     @Override

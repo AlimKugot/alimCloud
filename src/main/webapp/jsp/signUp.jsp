@@ -14,7 +14,11 @@
 </head>
 <body>
 <%--    todo : merge with signUp--%>
-    <div class="signupSection">
+
+    <div class="split left">
+        <img src="${pageContext.request.contextPath}/img/image_part_002.jpeg" alt=""/>
+    </div>
+    <div class="split right">
         <form method="post" class="signupForm" name="signupForm">
             <h2>Sign Up</h2>
             <ul class="noBullet">

@@ -8,6 +8,25 @@ body {
     background: #111 no-repeat;
 }
 
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+}
+
 .signupSection {
     background-repeat: no-repeat;
     position: absolute;
