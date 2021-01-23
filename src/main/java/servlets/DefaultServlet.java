@@ -5,12 +5,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("")
 public class DefaultServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/jsp/default.jsp").forward(req, resp);
+        HttpSession session = req.getSession();
+        if (session.getAttribute("AuthorizationToken") != null) {
+            req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
+        } else {
+            req.getServletContext().getRequestDispatcher("/login").forward(req, resp);
+        }
     }
 }

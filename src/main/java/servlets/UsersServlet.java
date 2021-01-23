@@ -1,8 +1,9 @@
 package servlets;
 
 import dao.UsersDao;
+import dao.UsersDaoJdbcImpl;
+import database.InitDatabase;
 import model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +15,12 @@ import java.util.List;
 
 @WebServlet("/users")
 public class UsersServlet extends HttpServlet {
-    @Autowired
     UsersDao usersDao;
+
+    @Override
+    public void init() {
+        usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
