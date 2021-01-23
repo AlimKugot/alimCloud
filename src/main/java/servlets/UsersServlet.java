@@ -18,7 +18,7 @@ public class UsersServlet extends HttpServlet {
     UsersDao usersDao;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
     }
 

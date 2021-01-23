@@ -8,8 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Login</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/newLogin.scss">
+    <script src="https://kit.fontawesome.com/5ec1c7fb17.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">
@@ -33,6 +34,22 @@
     </div>
 </body>
 <footer>
-<%--    todo: footer--%>
+    <div class="footer-contacts">
+        <p class="author">Developer contacts: </p>
+        <div class="social">
+            <a href="https://vk.com/alim_kugot">
+                <i class="fab fa-vk"></i>
+            </a>
+            <a href="https://github.com/AlimKugot">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="mailto:alim.filipov@gmail.com">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/alim-kugotov">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </div>
 </footer>
 </html>

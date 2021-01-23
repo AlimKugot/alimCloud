@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     UsersDao usersDao;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
     }
 
@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
