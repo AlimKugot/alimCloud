@@ -1,10 +1,8 @@
 package dao;
 
-import repository.UserSQLQueries;
+import database.SQLQueries;
 import model.User;
-import org.springframework.stereotype.Component;
 
-@Component
 public abstract class UsersDao implements CrudDao<User> {
     protected static final String SQL_SELECT_ALL;
     protected static final String SQL_SELECT_BY_EMAIL;
@@ -13,10 +11,11 @@ public abstract class UsersDao implements CrudDao<User> {
     protected static final String SQL_UPDATE_EMAIL;
 
     static {
-        SQL_SELECT_ALL = UserSQLQueries.getSQL_SELECT_ALL();
-        SQL_SELECT_BY_EMAIL = UserSQLQueries.getSQL_SELECT_BY_EMAIL();
-        SQL_INSERT_INTO_USERS = UserSQLQueries.getSQL_INSERT_INTO_USERS();
-        SQL_DELETE_BY_EMAIL = UserSQLQueries.getSQL_DELETE_BY_EMAIL();
-        SQL_UPDATE_EMAIL = UserSQLQueries.getSQL_UPDATE_EMAIL();
+        SQLQueries queries = new SQLQueries();
+        SQL_SELECT_ALL = queries.getSQL_SELECT_ALL();
+        SQL_SELECT_BY_EMAIL = queries.getSQL_SELECT_BY_EMAIL();
+        SQL_INSERT_INTO_USERS = queries.getSQL_INSERT_INTO_USERS();
+        SQL_DELETE_BY_EMAIL = queries.getSQL_DELETE_BY_EMAIL();
+        SQL_UPDATE_EMAIL = queries.getSQL_UPDATE_EMAIL();
     }
 }

@@ -1,6 +1,8 @@
 package model;
 
+import lombok.Builder;
 import lombok.Getter;
+
 import security.Crypto;
 
 @Getter
@@ -10,7 +12,6 @@ public class User {
     private final String email;
     private final String password;
 
-    //todo: problems with @lombok.builder
     private User(long id, String userName, String email, String password) {
         this.id = id;
         this.userName = userName;
@@ -24,22 +25,22 @@ public class User {
         private String email;
         private String password;
 
-        public Builder setId(long id) {
+        public Builder id(long id) {
             this.id = id;
             return this;
         }
 
-        public Builder setUserName(String name) {
+        public Builder userName(String name) {
             this.userName = name;
             return this;
         }
 
-        public Builder setEmail(String email) {
+        public Builder email(String email) {
             this.email = email;
             return this;
         }
 
-        public Builder setPassword(String password) {
+        public Builder password(String password) {
             this.password = Crypto.hashPasswordBcrypt(password);
             return this;
         }

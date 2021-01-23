@@ -1,27 +1,18 @@
 package dao;
 
 import model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
-@Component
 public class UsersDaoJdbcImpl extends UsersDao {
     private final Connection connection;
 
-    @Autowired
-    public UsersDaoJdbcImpl(DataSource dataSource) {
-        try {
-            connection = dataSource.getConnection();
-        } catch (SQLException sqlException) {
-            throw new IllegalStateException(sqlException);
-        }
+    public UsersDaoJdbcImpl(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -36,9 +27,9 @@ public class UsersDaoJdbcImpl extends UsersDao {
                 long id = resultSet.getLong("id");
 
                 User user = new User.Builder()
-                        .setId(id)
-                        .setUserName(userName)
-                        .setEmail(email)
+                        .id(id)
+                        .userName(userName)
+                        .email(email)
                         .build();
                 return Optional.of(user);
             }
@@ -107,9 +98,9 @@ public class UsersDaoJdbcImpl extends UsersDao {
                 String email = resultSet.getString("email");
 
                 User user = new User.Builder()
-                        .setId(id)
-                        .setUserName(userName)
-                        .setEmail(email)
+                        .id(id)
+                        .userName(userName)
+                        .email(email)
                         .build();
                 userList.add(user);
             }

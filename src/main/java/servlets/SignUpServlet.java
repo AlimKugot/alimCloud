@@ -35,9 +35,9 @@ public class SignUpServlet extends HttpServlet {
         String password = req.getParameter("password");
         if (userName != null && email != null && password != null) {
             User user = new User.Builder()
-                    .setUserName(userName)
-                    .setEmail(email)
-                    .setPassword(password)
+                    .userName(userName)
+                    .email(email)
+                    .password(password)
                     .build();
             usersDao.save(user);
             HttpSession session = req.getSession();
