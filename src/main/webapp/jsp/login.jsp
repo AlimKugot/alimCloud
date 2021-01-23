@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/newLogin.scss">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.scss">
     <script src="https://kit.fontawesome.com/5ec1c7fb17.js" crossorigin="anonymous"></script>
 </head>
 <body>

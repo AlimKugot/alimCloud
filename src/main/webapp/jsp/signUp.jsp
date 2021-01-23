@@ -9,34 +9,54 @@
 <html>
 <head>
     <title>welcome to resty</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/signUp.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/signUp.scss">
     <script src="${pageContext.request.contextPath}/JS/signUpCheck.js"></script>
+    <script src="https://kit.fontawesome.com/5ec1c7fb17.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <form method="post" class="signupForm" name="signupForm">
-        <h2>Sign Up</h2>
-        <ul class="noBullet">
-            <li>
-                <label for="username"></label>
-                <input type="text" class="inputFields" id="username" name="username" placeholder="Username" value=""
-                       oninput="return userNameValidation(this.value)" required/>
-            </li>
-            <li>
-                <label for="email"></label>
-                <input type="email" class="inputFields" id="email" name="email" placeholder="Email" value="" required/>
-            </li>
-            <li>
-                <label for="password"></label>
-                <input type="password" class="inputFields" id="password" name="password" placeholder="Password" value=""
-                       oninput="return passwordValidation(this.value)" required/>
-            </li>
-            <li id="center-btn">
-                <input type="submit" id="join-btn" name="join" alt="Join" value="Join">
-            </li>
-        </ul>
+        <div class="container">
+            <div class="left">
+                <div class="header">
+                    <h2 class="animation a1">Welcome</h2>
+                    <h4 class="animation a2">Sign up into our platform</h4>
+                </div>
+                <div class="form">
+                    <label for="username">
+                        <input type="text" id="username" class="form-field animation a3" placeholder="Username" value=""
+                               oninput="return userNameValidation(this.value)" required>
+                    </label>
+                    <label for="email">
+                        <input type="email" id="email" class="form-field animation a4" placeholder="Email Address" required>
+                    </label>
+                    <label for="password">
+                        <input type="password" id="password" class="form-field animation a5" placeholder="Password"
+                               value="" oninput="return passwordValidation(this.value)" required>
+                    </label>
+                    <button type="submit" class="button animation a6">SIGN UP</button>
+                </div>
+            </div>
+            <div class="right"></div>
+        </div>
     </form>
 </body>
 <footer>
-
+    <div class="footer-contacts">
+        <p class="author">Developer contacts: </p>
+        <div class="social">
+            <a href="https://vk.com/alim_kugot">
+                <i class="fab fa-vk"></i>
+            </a>
+            <a href="https://github.com/AlimKugot">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="mailto:alim.filipov@gmail.com">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/alim-kugotov">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </div>
 </footer>
 </html>
