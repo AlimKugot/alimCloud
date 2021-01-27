@@ -1,11 +1,7 @@
 package model;
 
-import lombok.Builder;
-import lombok.Getter;
-
 import security.Crypto;
 
-@Getter
 public class User {
     private final long id;
     private final String userName;
@@ -48,5 +44,22 @@ public class User {
         public User build() {
             return new User(this.id, this.userName, this.email, this.password);
         }
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
