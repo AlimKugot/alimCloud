@@ -13,25 +13,27 @@
     <script src="https://kit.fontawesome.com/5ec1c7fb17.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="left">
-            <div class="header">
-                <h2 class="animation a1">Welcome Back</h2>
-                <h4 class="animation a2">Log in to your account using email and password</h4>
-            </div>
-            <div class="form">
-                <label for="email">
-                    <input type="email" id="email" class="form-field animation a3" placeholder="Email Address" required>
-                </label>
-                <label for="password">
-                    <input type="password" id="password" class="form-field animation a4" placeholder="Password" required>
-                </label>
-                <p class="animation a5"><a href="#">Forgot Password</a></p>
-                <button type="submit" class="animation a6">LOGIN</button>
-            </div>
+<div class="container">
+    <div class="left">
+        <div class="header">
+            <h2 class="animation a1">Welcome Back</h2>
+            <h4 class="animation a2">Log in to your account using email and password</h4>
         </div>
-        <div class="right"></div>
+        <form class="form" method="post">
+            <label for="email">
+                <input type="email" id="email" class="form-field animation a3"
+                       placeholder="Email Address" required>
+            </label>
+            <label for="password">
+                <input type="password" id="password" class="form-field animation a4"
+                       placeholder="Password" required>
+            </label>
+            <p class="animation a5"><a href="#">Forgot Password</a></p>
+            <button type="submit" class="animation a6">LOGIN</button>
+        </form>
     </div>
+    <div class="right"></div>
+</div>
 </body>
 <footer>
     <div class="footer-contacts">

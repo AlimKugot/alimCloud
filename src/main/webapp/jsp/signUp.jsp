@@ -14,31 +14,31 @@
     <script src="https://kit.fontawesome.com/5ec1c7fb17.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <form method="post" class="signupForm" name="signupForm">
-        <div class="container">
-            <div class="left">
-                <div class="header">
-                    <h2 class="animation a1">Welcome</h2>
-                    <h4 class="animation a2">Sign up into our platform</h4>
-                </div>
-                <div class="form">
-                    <label for="username">
-                        <input type="text" id="username" class="form-field animation a3" placeholder="Username" value=""
-                               oninput="return userNameValidation(this.value)" required>
-                    </label>
-                    <label for="email">
-                        <input type="email" id="email" class="form-field animation a4" placeholder="Email Address" required>
-                    </label>
-                    <label for="password">
-                        <input type="password" id="password" class="form-field animation a5" placeholder="Password"
-                               value="" oninput="return passwordValidation(this.value)" required>
-                    </label>
-                    <button type="submit" class="button animation a6">SIGN UP</button>
-                </div>
+<form method="post" class="signupForm" name="signupForm">
+    <div class="container">
+        <div class="left">
+            <div class="header">
+                <h2 class="animation a1">Welcome</h2>
+                <h4 class="animation a2">Sign up into our platform</h4>
             </div>
-            <div class="right"></div>
+            <form class="form" action="${pageContext.request.contextPath}/home" method="post">
+                <label for="username">
+                    <input type="text" id="username" class="form-field animation a3" placeholder="Username" value=""
+                           oninput="return userNameValidation(this.value)" required>
+                </label>
+                <label for="email">
+                    <input type="email" id="email" class="form-field animation a4" placeholder="Email Address" required>
+                </label>
+                <label for="password">
+                    <input type="password" id="password" class="form-field animation a5" placeholder="Password"
+                           value="" oninput="return passwordValidation(this.value)" required>
+                </label>
+                <button type="submit" class="button animation a6">SIGN UP</button>
+            </form>
         </div>
-    </form>
+        <div class="right"></div>
+    </div>
+</form>
 </body>
 <footer>
     <div class="footer-contacts">
