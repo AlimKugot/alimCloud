@@ -14,9 +14,10 @@ public class DefaultServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         if (session.getAttribute("AuthorizationToken") != null) {
+            resp.sendRedirect(req.getRequestURI() + "/home");
             req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
         } else {
-            req.getServletContext().getRequestDispatcher("/login").forward(req, resp);
+            resp.sendRedirect(req.getRequestURI() + "/login");
         }
     }
 }

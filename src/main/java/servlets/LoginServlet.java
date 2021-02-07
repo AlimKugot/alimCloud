@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("AuthorizationToken", Crypto.hashPasswordBcrypt(email));
         } else {
-            servletUrl = "/signIn";
+            servletUrl = "/login";
         }
         String redirect = resp.encodeRedirectURL(servletPath + servletUrl);
         resp.sendRedirect(redirect);
