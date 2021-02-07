@@ -3,7 +3,7 @@ package servlets;
 import dao.UsersDao;
 import dao.UsersDaoJdbcImpl;
 import database.InitDatabase;
-import database.LoginConfirm;
+import security.LoginConfirm;
 import security.Crypto;
 
 
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.io.IOException;
 
 @WebServlet("/login")

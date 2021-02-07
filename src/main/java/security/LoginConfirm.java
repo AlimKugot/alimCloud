@@ -1,29 +1,36 @@
 package security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import repository.UserSQLQueries;
+import database.InitDatabase;
+import database.SQLQueries;
+import security.Crypto;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Component
 public class LoginConfirm {
-    private static DataSource dataSource;
+    private static final Connection connection;
+    private static final String SQL_SELECT_ALL;
+    private static final String SQL_SELECT_BY_EMAIL;
+    private static final String SQL_INSERT_INTO_USERS;
+    private static final String SQL_DELETE_BY_EMAIL;
+    private static final String SQL_UPDATE_EMAIL;
 
-    @Autowired
-    public LoginConfirm(DataSource dataSource) {
-        LoginConfirm.dataSource = dataSource;
+    static {
+        connection = InitDatabase.getConnection();
+        SQLQueries queries = new SQLQueries();
+        SQL_SELECT_ALL = queries.getSQL_SELECT_ALL();
+        SQL_SELECT_BY_EMAIL = queries.getSQL_SELECT_BY_EMAIL();
+        SQL_INSERT_INTO_USERS = queries.getSQL_INSERT_INTO_USERS();
+        SQL_DELETE_BY_EMAIL = queries.getSQL_DELETE_BY_EMAIL();
+        SQL_UPDATE_EMAIL = queries.getSQL_UPDATE_EMAIL();
     }
+
 
     public static boolean confirmEmailAndPassword(String email, String password) {
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareStatement
-                    (UserSQLQueries.getSQL_DELETE_BY_EMAIL());
+            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_EMAIL);
             ps.setString(1, email);
             ResultSet resultSet = ps.executeQuery();
 
@@ -36,4 +43,6 @@ public class LoginConfirm {
         }
         return false;
     }
+
+
 }
