@@ -18,14 +18,14 @@ public class UsersDaoTest {
 
     @Test
     public void save() {
-        fakeUsers.usersDao.save(fakeUsers.ivan);
-        assertFalse(fakeUsers.usersDao.find(fakeUsers.IVAN_EMAIL).isEmpty());
+        fakeUsers.getUsersDao().save(fakeUsers.getIvan());
+        assertFalse(fakeUsers.getUsersDao().find(fakeUsers.getIVAN_EMAIL()).isEmpty());
     }
 
     @Test
     public void delete() {
-        fakeUsers.usersDao.delete(fakeUsers.IVAN_EMAIL);
-        assertTrue(fakeUsers.usersDao.find(fakeUsers.IVAN_EMAIL).isEmpty());
+        fakeUsers.getUsersDao().delete(fakeUsers.getIVAN_EMAIL());
+        assertTrue(fakeUsers.getUsersDao().find(fakeUsers.getJOHN_EMAIL()).isEmpty());
     }
 
     @Test
@@ -35,13 +35,13 @@ public class UsersDaoTest {
 
     @Test
     public void findAll() {
-        fakeUsers.usersDao.save(fakeUsers.ivan);
-        fakeUsers.usersDao.save(fakeUsers.john);
-        List<User> userList = fakeUsers.usersDao.findAll();
+        fakeUsers.getUsersDao().save(fakeUsers.getIvan());
+        fakeUsers.getUsersDao().save(fakeUsers.getJohn());
+        List<User> userList = fakeUsers.getUsersDao().findAll();
         int countOfMatches = 0;
         for (User user : userList) {
             String userMail = user.getEmail();
-            if (userMail.equals(fakeUsers.JOHN_EMAIL) || userMail.equals(fakeUsers.IVAN_EMAIL))
+            if (userMail.equals(fakeUsers.getJOHN_EMAIL()) || userMail.equals(fakeUsers.getIVAN_EMAIL()))
                 countOfMatches++;
         }
         assertEquals(countOfMatches, 2);
