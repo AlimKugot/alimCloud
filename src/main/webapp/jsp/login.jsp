@@ -28,11 +28,13 @@
                 <input type="password" id="password" class="form-field animation a4"
                        placeholder="Password" required>
             </label>
-            <p class="animation a5"><a href="#">Forgot Password</a></p>
+            <p class="animation a5"><a href="#">Forgot Password?</a></p>
             <button type="submit" class="animation a6">LOGIN</button>
         </form>
     </div>
-    <div class="right"></div>
+    <div class="right">
+
+    </div>
 </div>
 </body>
 <footer>
