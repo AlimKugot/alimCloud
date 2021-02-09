@@ -1,4 +1,4 @@
 todo:
-    - add footer
-    - file/class to hold sql_queries
+    - remove /signIn servlet
     - add authorization from another services (like google, facebook...)
+    - add https

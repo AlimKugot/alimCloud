@@ -15,7 +15,6 @@ public class DefaultServlet extends HttpServlet {
         HttpSession session = req.getSession();
         if (session.getAttribute("AuthorizationToken") != null) {
             resp.sendRedirect(req.getRequestURI() + "/home");
-            req.getServletContext().getRequestDispatcher("/home").forward(req, resp);
         } else {
             resp.sendRedirect(req.getRequestURI() + "/login");
         }
