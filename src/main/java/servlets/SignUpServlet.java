@@ -8,10 +8,7 @@ import security.Crypto;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/signUp")
@@ -42,8 +39,10 @@ public class SignUpServlet extends HttpServlet {
             usersDao.save(user);
             HttpSession session = req.getSession();
             session.setAttribute("AuthorizationToken", Crypto.hashPasswordBcrypt(email));
+            Cookie instruction = new Cookie("instruction", "true");
+            resp.addCookie(instruction);
         }
         String contextPath = getServletContext().getContextPath();
-        resp.sendRedirect( contextPath + "/home");
+        resp.sendRedirect( contextPath + "/first_steps");
     }
 }
