@@ -1,4 +1,4 @@
-package servlets;
+package servlets.servlet;
 
 import dao.UsersDao;
 import dao.UsersDaoJdbcImpl;
@@ -10,19 +10,21 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
-    private UsersDao usersDao;
+    protected AtomicReference<UsersDao> usersDao;
+    private static final String signUp = "/jsp/signUp.jsp";
 
     @Override
     public void init() {
-        usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
+        usersDao = new AtomicReference<>(new UsersDaoJdbcImpl(InitDatabase.getConnection()));
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/jsp/signUp.jsp").forward(req, resp);
+        req.getServletContext().getRequestDispatcher(signUp).forward(req, resp);
     }
 
     @Override
@@ -36,7 +38,7 @@ public class SignUpServlet extends HttpServlet {
                     .email(email)
                     .password(password)
                     .build();
-            usersDao.save(user);
+            usersDao.get().save(user);
             HttpSession session = req.getSession();
             session.setAttribute("AuthorizationToken", Crypto.hashPasswordBcrypt(email));
             Cookie instruction = new Cookie("instruction", "true");

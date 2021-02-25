@@ -1,4 +1,4 @@
-package servlets;
+package servlets.servlet;
 
 import dao.UsersDao;
 import dao.UsersDaoJdbcImpl;
@@ -12,21 +12,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @WebServlet("/users")
 public class UsersServlet extends HttpServlet {
-    UsersDao usersDao;
+    protected AtomicReference<UsersDao> usersDao;
+    private static final String users = "/jsp/users.jsp";
 
     @Override
     public void init() {
-        usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
+        usersDao = new AtomicReference<>(new UsersDaoJdbcImpl(InitDatabase.getConnection()));
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<User> userList = usersDao.findAll();
+        List<User> userList = usersDao.get().findAll();
         req.setAttribute("usersFromServer", userList);
-        req.getServletContext().getRequestDispatcher("/jsp/users.jsp").forward(req, resp);
+        req.getServletContext().getRequestDispatcher(users).forward(req, resp);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package filters;
+package servlets.filters;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
+@WebFilter("/")
 public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
@@ -21,6 +21,8 @@ public class AuthFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
         HttpSession session = req.getSession(false);
+
+
 
         if (session == null || session.getAttribute("AuthorizationToken") == null) {
             servletRequest.getServletContext().getRequestDispatcher("/signIn").forward(req, resp);
