@@ -1,5 +1,6 @@
 package dao;
 
+import model.Role;
 import model.User;
 
 import java.sql.*;
@@ -15,21 +16,47 @@ public class UsersDaoJdbcImpl extends UsersDao {
         this.connection = connection;
     }
 
+
     @Override
-    public Optional<User> find(String email) {
+    public boolean find(String email) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_EMAIL);
+            ps.setString(1, email);
+            ResultSet resultSet = ps.executeQuery();
+            return (resultSet.next());
+        } catch (SQLException sqlException) {
+            throw new IllegalStateException(sqlException);
+        }
+    }
+
+    @Override
+    public Optional<User> find(String email, String password) {
         try {
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_EMAIL);
             ps.setString(1, email);
             ResultSet resultSet = ps.executeQuery();
 
-            if (resultSet.next()) {
+            if (resultSet.next() &&
+                    resultSet.getString("password").equals(password)) {
+
                 String userName = resultSet.getString("username");
                 long id = resultSet.getLong("id");
+                String roleString = resultSet.getString("role");
+                Role role;
+
+                if (roleString.equals(Role.user.toString())) {
+                    role = Role.user;
+                } else if (roleString.equals(Role.admin.toString())) {
+                    role = Role.admin;
+                } else {
+                    role = Role.unknown;
+                }
 
                 User user = new User.Builder()
                         .id(id)
                         .userName(userName)
                         .email(email)
+                        .role(role)
                         .build();
                 return Optional.of(user);
             }
@@ -42,11 +69,12 @@ public class UsersDaoJdbcImpl extends UsersDao {
     @Override
     public void save(User model) {
         try {
-            if (find(model.getEmail()).isEmpty()) {
+            if (!find(model.getEmail())) {
                 PreparedStatement ps = connection.prepareStatement(SQL_INSERT_INTO_USERS);
                 ps.setString(1, model.getUserName());
                 ps.setString(2, model.getEmail());
                 ps.setString(3, model.getPassword());
+                ps.setString(4, model.getRole().toString());
                 ps.executeUpdate();
             }
         } catch (SQLException sqlException) {
@@ -73,8 +101,8 @@ public class UsersDaoJdbcImpl extends UsersDao {
 
     @Override
     public void delete(String email) {
-        try  {
-            if (find(email).isPresent()) {
+        try {
+            if (find(email)) {
                 PreparedStatement ps = connection.prepareStatement(SQL_DELETE_BY_EMAIL);
                 ps.setString(1, email);
                 ps.executeUpdate();
@@ -83,7 +111,6 @@ public class UsersDaoJdbcImpl extends UsersDao {
             throw new IllegalStateException(sqlException);
         }
     }
-
 
 
     @Override

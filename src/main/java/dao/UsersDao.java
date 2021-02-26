@@ -1,7 +1,10 @@
 package dao;
 
 import database.SQLQueries;
+import model.Role;
 import model.User;
+
+import java.util.Optional;
 
 public abstract class UsersDao implements CrudDao<User> {
     protected static final String SQL_SELECT_ALL;
@@ -18,4 +21,6 @@ public abstract class UsersDao implements CrudDao<User> {
         SQL_DELETE_BY_EMAIL = queries.getSQL_DELETE_BY_EMAIL();
         SQL_UPDATE_EMAIL = queries.getSQL_UPDATE_EMAIL();
     }
+
+    abstract public Optional<User> find(String email, String password);
 }

@@ -7,12 +7,15 @@ public class User {
     private final String userName;
     private final String email;
     private final String password;
+    private final Role role;
 
-    private User(long id, String userName, String email, String password) {
+
+    private User(long id, String userName, String email, String password, Role role) {
         this.id = id;
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public static class Builder {
@@ -20,6 +23,7 @@ public class User {
         private String userName;
         private String email;
         private String password;
+        private Role role;
 
         public Builder id(long id) {
             this.id = id;
@@ -41,8 +45,14 @@ public class User {
             return this;
         }
 
+        public Builder role(Role role) {
+            this.role = role;
+            return this;
+        }
+
         public User build() {
-            return new User(this.id, this.userName, this.email, this.password);
+            return new User(this.id, this.userName, this.email,
+                    this.password, this.role);
         }
     }
 
@@ -61,5 +71,9 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public Role getRole() {
+        return role;
     }
 }

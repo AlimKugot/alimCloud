@@ -5,7 +5,7 @@ public class SQLQueries {
     private final String SQL_SELECT_ALL = "SELECT * FROM " + tableName;
     private final String SQL_SELECT_BY_EMAIL = "SELECT * FROM " + tableName + " WHERE email = ?";
     private final String SQL_INSERT_INTO_USERS = "INSERT INTO " + tableName +
-            "(username, email, password) VALUES (?, ?, ?)";
+            "(username, email, password, role) VALUES (?, ?, ?, ?)";
     private final String SQL_DELETE_BY_EMAIL = "DELETE FROM " + tableName +
             " WHERE email = ?";
     private final String SQL_UPDATE_EMAIL = "UPDATE " + tableName +

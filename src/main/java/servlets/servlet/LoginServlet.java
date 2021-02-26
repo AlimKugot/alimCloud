@@ -1,12 +1,11 @@
 package servlets.servlet;
 
 import dao.UsersDao;
-import dao.UsersDaoJdbcImpl;
-import database.InitDatabase;
-import security.LoginConfirm;
 import security.Crypto;
+import servlets.ContextListener;
 
 
+import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,12 +17,18 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    protected AtomicReference<UsersDao> usersDao;
+    private static AtomicReference<UsersDao> usersDao;
     private static final String login = "/jsp/login.jsp";
 
     @Override
+    @SuppressWarnings("unchecked")
     public void init() {
-        usersDao = new AtomicReference<>(new UsersDaoJdbcImpl(InitDatabase.getConnection()));
+        ContextListener cs = new ContextListener();
+        ServletContextEvent sce = new ServletContextEvent(this.getServletContext());
+        cs.contextInitialized(sce);
+
+        usersDao = (AtomicReference<UsersDao>)
+                this.getServletContext().getAttribute("usersDao");
     }
 
     @Override
@@ -38,7 +43,7 @@ public class LoginServlet extends HttpServlet {
 
         String servletPath = req.getServletContext().getContextPath();
         String servletUrl;
-        if (LoginConfirm.confirmEmailAndPassword(email,password)) {
+        if (usersDao.get().find(email, password).isPresent()) {
             servletUrl = "/home";
             HttpSession session = req.getSession();
             session.setAttribute("AuthorizationToken", Crypto.hashPasswordBcrypt(email));
