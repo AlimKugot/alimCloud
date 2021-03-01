@@ -9,8 +9,17 @@ import java.util.Properties;
 
 public class InitDatabase {
     private static String tableName = "users";
-    public static String pathToProperty = "/home/alim/Downloads/apache-tomcat-9.0.41/webapps/" +
-            "resty_com_war/WEB-INF/classes/db.properties";
+    public static String pathToProperty;
+
+    static {
+        String tomcatBase = System.getProperty("catalina.home");
+        String projectPath = String.format("/%s/webapps/resty_com_war/", tomcatBase);
+        pathToProperty = projectPath + "/WEB-INF/classes/db.properties";
+    }
+
+    static void connectTomcat() {
+
+    }
 
     public static Connection getConnection() {
         Properties properties = new Properties();
