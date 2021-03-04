@@ -1,11 +1,9 @@
-package servlets.servlet;
+package web.servlet.signUp;
 
 import dao.UsersDao;
-import dao.UsersDaoJdbcImpl;
-import database.InitDatabase;
 import model.User;
 import security.Crypto;
-import servlets.ContextListener;
+import web.listener.ContextListener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
@@ -14,7 +12,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
-@WebServlet("/signUp")
+@WebServlet(name = "SignUp", value = "/signUp")
 public class SignUpServlet extends HttpServlet {
     protected AtomicReference<UsersDao> usersDao;
     private static final String signUp = "/jsp/signUp.jsp";

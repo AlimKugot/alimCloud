@@ -1,4 +1,4 @@
-package servlets.servlet;
+package web.servlet.signUp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/first_steps")
+@WebServlet(name = "Instruction", value = "/first_steps")
 public class InstructionServlet extends HttpServlet {
     private static final String instruction = "/jsp/instruction.jsp";
 
