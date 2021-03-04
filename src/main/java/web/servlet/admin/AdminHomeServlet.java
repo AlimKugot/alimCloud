@@ -1,4 +1,4 @@
-package servlets.servlet;
+package web.servlet.admin;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/admin_home")
+@WebServlet(name = "adminHome", value = "/admin_home")
 public class AdminHomeServlet extends HttpServlet {
     private static final String admin = "/jsp/adminHome.jsp";
 

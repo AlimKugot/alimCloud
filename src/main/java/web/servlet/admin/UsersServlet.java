@@ -1,4 +1,4 @@
-package servlets.servlet;
+package web.servlet.admin;
 
 import dao.UsersDao;
 import dao.UsersDaoJdbcImpl;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 
-@WebServlet("/users")
+@WebServlet(name = "Users", value = "/users")
 public class UsersServlet extends HttpServlet {
     protected AtomicReference<UsersDao> usersDao;
     private static final String users = "/jsp/users.jsp";
