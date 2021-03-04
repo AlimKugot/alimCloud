@@ -1,4 +1,4 @@
-package servlets.filters;
+package web.filter;
 
 import dao.UsersDao;
 import model.Role;

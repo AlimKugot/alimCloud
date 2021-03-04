@@ -1,4 +1,4 @@
-package servlets;
+package web.listener;
 
 import dao.UsersDao;
 import dao.UsersDaoJdbcImpl;
