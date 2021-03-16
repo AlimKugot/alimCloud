@@ -1,4 +1,0 @@
-todo:
-    - remove /signIn servlet
-    - add authorization from another services (like google, facebook...)
-    - add https
