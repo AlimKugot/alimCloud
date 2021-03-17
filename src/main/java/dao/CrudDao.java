@@ -1,12 +1,13 @@
 package dao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CrudDao <T> {
-    boolean find(String email);
+    Optional<T> find(Integer id);
     void save(T model);
     void update(T model);
-    void delete(String email);
+    void delete(Integer id);
 
     List<T> findAll();
 }

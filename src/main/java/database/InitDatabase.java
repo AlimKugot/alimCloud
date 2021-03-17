@@ -8,23 +8,20 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class InitDatabase {
-    private static String tableName = "users";
-    public static String pathToProperty;
+    private static final String pathToPropertyFolder;
+    private static final String pathDbProperty;
 
     static {
         String tomcatBase = System.getProperty("catalina.home");
         String projectPath = String.format("/%s/webapps/resty_com_war/", tomcatBase);
-        pathToProperty = projectPath + "/WEB-INF/classes/db.properties";
-    }
-
-    static void connectTomcat() {
-
+        pathToPropertyFolder = projectPath + "/WEB-INF/classes";
+        pathDbProperty = pathToPropertyFolder + "/db.properties";
     }
 
     public static Connection getConnection() {
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream(pathToProperty));
+            properties.load(new FileInputStream(pathDbProperty));
             String dbUrl = properties.getProperty("db.url");
             String dbUserName = properties.getProperty("db.userName");
             String dbPassword = properties.getProperty("db.password");
@@ -37,19 +34,11 @@ public class InitDatabase {
         }
     }
 
-    public static String getTableName() {
-        return tableName;
+    public static String getPathToPropertyFolder() {
+        return pathToPropertyFolder;
     }
 
-    public static void setTableName(String tableName) {
-         InitDatabase.tableName = tableName;
-    }
-
-    public static String getPathToProperty() {
-        return pathToProperty;
-    }
-
-    public static void setPathToProperty(String pathToProperty) {
-        InitDatabase.pathToProperty = pathToProperty;
+    public static String getPathDbProperty() {
+        return pathDbProperty;
     }
 }

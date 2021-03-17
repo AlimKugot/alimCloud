@@ -1,8 +1,8 @@
-package servlets.servlet;
+package web.servlet;
 
 import dao.UsersDao;
 import security.Crypto;
-import servlets.ContextListener;
+import web.listener.ContextListener;
 
 
 import javax.servlet.ServletContextEvent;
@@ -15,10 +15,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
-@WebServlet("/login")
+@WebServlet(name = "Login", value = "/login")
 public class LoginServlet extends HttpServlet {
     private static AtomicReference<UsersDao> usersDao;
-    private static final String login = "/jsp/login.jsp";
+    private static final String pathLogin = "/jsp/login.jsp";
 
     @Override
     @SuppressWarnings("unchecked")
@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher(login).forward(req, resp);
+        req.getServletContext().getRequestDispatcher(pathLogin).forward(req, resp);
     }
 
     @Override

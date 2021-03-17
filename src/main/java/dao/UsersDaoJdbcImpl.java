@@ -2,6 +2,8 @@ package dao;
 
 import model.Role;
 import model.User;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,30 +11,46 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class UsersDaoJdbcImpl extends UsersDao {
+public class UsersDaoJdbcImpl extends CrudDaoJdbc<User> implements UsersDao {
     private final Connection connection;
+    private final static Logger logger;
+
+    static {
+        logger = Logger.getLogger(UsersDaoJdbcImpl.class);
+        logger.setLevel(Level.ERROR);
+    }
 
     public UsersDaoJdbcImpl(Connection connection) {
         this.connection = connection;
     }
 
 
-    @Override
-    public boolean find(String email) {
-        try {
-            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_EMAIL);
+    public boolean isExists(String email) {
+        try (PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_EMAIL)) {
             ps.setString(1, email);
             ResultSet resultSet = ps.executeQuery();
-            return (resultSet.next());
+            resultSet.close();
+            return resultSet.next();
         } catch (SQLException sqlException) {
-            throw new IllegalStateException(sqlException);
+            logger.error(sqlException.getMessage(), sqlException);
+            return false;
         }
     }
 
     @Override
+    public Optional<User> find(Integer id) {
+        try (PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_ID)) {
+            ps.setInt(1, id);
+            ps.executeQuery();
+        } catch (SQLException sqlException) {
+            logger.error(sqlException.getMessage(), sqlException);
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<User> find(String email, String password) {
-        try {
-            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_EMAIL);
+        try (PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_EMAIL)) {
             ps.setString(1, email);
             ResultSet resultSet = ps.executeQuery();
 
@@ -60,25 +78,24 @@ public class UsersDaoJdbcImpl extends UsersDao {
                         .build();
                 return Optional.of(user);
             }
-            return Optional.empty();
         } catch (SQLException sqlException) {
-            throw new IllegalStateException(sqlException);
+            logger.error(sqlException.getMessage(), sqlException);
         }
+        return Optional.empty();
     }
 
     @Override
     public void save(User model) {
-        try {
-            if (!find(model.getEmail())) {
-                PreparedStatement ps = connection.prepareStatement(SQL_INSERT_INTO_USERS);
+        if (!isExists(model.getEmail())) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL_INSERT_INTO_USERS)) {
                 ps.setString(1, model.getUserName());
                 ps.setString(2, model.getEmail());
                 ps.setString(3, model.getPassword());
                 ps.setString(4, model.getRole().toString());
                 ps.executeUpdate();
+            } catch (SQLException sqlException) {
+                logger.error(sqlException.getMessage(), sqlException);
             }
-        } catch (SQLException sqlException) {
-            throw new IllegalStateException(sqlException);
         }
     }
 
@@ -88,36 +105,44 @@ public class UsersDaoJdbcImpl extends UsersDao {
     }
 
     private void updateEmail(String oldEmail, String newEmail) {
-        try {
-            PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_EMAIL);
+        try (PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_EMAIL)) {
             ps.setString(1, oldEmail);
             ps.setString(2, newEmail);
             ps.executeUpdate();
         } catch (SQLException sqlException) {
-            throw new IllegalStateException(sqlException);
+            logger.error(sqlException.getMessage(), sqlException);
         }
     }
 
-
     @Override
+    public void delete(Integer id) {
+        if (find(id).isPresent()) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL_DELETE_BY_ID)) {
+                ps.setInt(1, id);
+                ps.executeUpdate();
+            } catch (SQLException sqlException) {
+                logger.error(sqlException.getMessage(), sqlException);
+            }
+        }
+    }
+
     public void delete(String email) {
-        try {
-            if (find(email)) {
-                PreparedStatement ps = connection.prepareStatement(SQL_DELETE_BY_EMAIL);
+        if (isExists(email)) {
+            try (PreparedStatement ps = connection.prepareStatement(SQL_DELETE_BY_EMAIL)) {
                 ps.setString(1, email);
                 ps.executeUpdate();
+            } catch (SQLException sqlException) {
+                logger.error(sqlException.getMessage(), sqlException);
             }
-        } catch (SQLException sqlException) {
-            throw new IllegalStateException(sqlException);
         }
     }
 
 
     @Override
     public List<User> findAll() {
+        List<User> userList = new ArrayList<>();
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL)) {
-            List<User> userList = new ArrayList<>();
 
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
@@ -133,7 +158,8 @@ public class UsersDaoJdbcImpl extends UsersDao {
             }
             return userList;
         } catch (SQLException sqlException) {
-            throw new IllegalStateException(sqlException);
+            logger.error(sqlException.getMessage(), sqlException);
         }
+        return userList;
     }
 }
