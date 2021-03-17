@@ -38,9 +38,9 @@ public class UsersDaoJdbcImpl extends CrudDaoJdbc<User> implements UsersDao {
     }
 
     @Override
-    public Optional<User> find(Integer id) {
+    public Optional<User> find(long id) {
         try (PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_ID)) {
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ps.executeQuery();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage(), sqlException);
@@ -115,10 +115,10 @@ public class UsersDaoJdbcImpl extends CrudDaoJdbc<User> implements UsersDao {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(long id) {
         if (find(id).isPresent()) {
             try (PreparedStatement ps = connection.prepareStatement(SQL_DELETE_BY_ID)) {
-                ps.setInt(1, id);
+                ps.setLong(1, id);
                 ps.executeUpdate();
             } catch (SQLException sqlException) {
                 logger.error(sqlException.getMessage(), sqlException);

@@ -32,6 +32,12 @@ public class OauthSql {
     public static String getSQL_INSERT_OAUTH_TABLE() {
         //language=SQL
         return "INSERT INTO oauth_yandex " +
-                "(id, oauth_key, owner_id, token_type, expires_in) values (?, ?, ?, ?, ?)";
+                "(oauth_key, owner_id, token_type, expires_in) values (?, ?, ?, ?)";
+    }
+
+    public static String getSQL_INSERT_OAUTH_TABLE_WITHOUT_OWNER_ID() {
+        //language=SQL
+        return "INSERT INTO oauth_yandex " +
+                "(oauth_key, token_type, expires_in) values (?, ?, ?)";
     }
 }

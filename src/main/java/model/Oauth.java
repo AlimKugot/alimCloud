@@ -12,4 +12,20 @@ public class Oauth {
         this.token_type = token_type;
         this.expires_in = expires_in;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getToken_type() {
+        return token_type;
+    }
+
+    public String getExpires_in() {
+        return expires_in;
+    }
 }

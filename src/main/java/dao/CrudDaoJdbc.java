@@ -17,9 +17,9 @@ public abstract class CrudDaoJdbc<T> implements CrudDao<T>  {
         logger.setLevel(Level.ERROR);
     }
 
-    protected Optional<T> find(Integer id, String query) {
+    protected Optional<T> find(long id, String query) {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ps.executeQuery();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage(), sqlException);
@@ -28,10 +28,10 @@ public abstract class CrudDaoJdbc<T> implements CrudDao<T>  {
     }
 
 
-    protected void delete(Integer id, String query) {
+    protected void delete(long id, String query) {
         if (find(id).isPresent()) {
             try (PreparedStatement ps = connection.prepareStatement(query)) {
-                ps.setInt(1, id);
+                ps.setLong(1, id);
                 ps.executeUpdate();
             } catch (SQLException sqlException) {
                 logger.error(sqlException.getMessage(), sqlException);
