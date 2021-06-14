@@ -1,5 +1,0 @@
-todo:
-    - Organize in the common abstract class that implements CRUD (standard functions)
-    - remove /signIn servlet
-    - add authorization from another services (like google, facebook...)
-    - add https

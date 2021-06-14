@@ -28,7 +28,6 @@ public class OauthSql {
     }
 
 
-
     public static String getSQL_INSERT_OAUTH_TABLE() {
         //language=SQL
         return "INSERT INTO oauth_yandex " +

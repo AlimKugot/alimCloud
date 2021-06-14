@@ -1,8 +1,8 @@
 package dao;
 
 import model.Oauth;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,12 +11,8 @@ import java.util.Optional;
 
 public class OauthDaoJdbcImpl extends CrudDaoJdbc<Oauth> implements OauthDao {
     private final Connection connection;
-    private final static Logger logger;
+    private final static Logger logger = LogManager.getLogger(OauthDaoJdbcImpl.class);
 
-    static {
-        logger = Logger.getLogger(OauthDaoJdbcImpl.class);
-        logger.setLevel(Level.ERROR);
-    }
 
     public OauthDaoJdbcImpl(Connection connection) {
         this.connection = connection;

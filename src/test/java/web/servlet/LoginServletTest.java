@@ -23,6 +23,5 @@ public class LoginServletTest {
     public void doGet() {
         MockitoAnnotations.initMocks(this);
         LoginServlet servlet = new LoginServlet();
-
     }
 }

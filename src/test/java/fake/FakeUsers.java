@@ -3,7 +3,10 @@ package fake;
 import dao.UsersDao;
 import dao.UsersDaoJdbcImpl;
 import database.InitDatabase;
+import model.Role;
 import model.User;
+
+import java.io.FileNotFoundException;
 
 public class FakeUsers {
     private dao.UsersDao usersDao;
@@ -15,18 +18,25 @@ public class FakeUsers {
     private User john;
 
     public FakeUsers() {
-        usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
+        InitDatabase.setPathDbProperty("src/main/resources/db.properties");
+        try {
+            usersDao = new UsersDaoJdbcImpl(InitDatabase.getConnection());
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+        }
         usersDao.delete(IVAN_EMAIL);
         usersDao.delete(JOHN_EMAIL);
         ivan = new User.Builder()
                 .userName("Ivan")
                 .email(IVAN_EMAIL)
                 .password(IVAN_PASSWORD)
+                .role(Role.user)
                 .build();
         john = new User.Builder()
                 .userName("john")
                 .email(JOHN_EMAIL)
                 .password(JOHN_PASSWORD)
+                .role(Role.user)
                 .build();
         usersDao.save(ivan);
         usersDao.save(john);

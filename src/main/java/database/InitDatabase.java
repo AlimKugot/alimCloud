@@ -1,6 +1,10 @@
 package database;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,8 +12,13 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class InitDatabase {
-    private static final String pathToPropertyFolder;
-    private static final String pathDbProperty;
+    private static final Logger logger = LogManager.getLogger(InitDatabase.class);
+    private static boolean isChangedDbConfig = false;
+
+    static String dbUrl, dbUserName, dbPassword, driverName;
+    private static String pathToPropertyFolder;
+    private static String pathDbProperty;
+
 
     static {
         String tomcatBase = System.getProperty("catalina.home");
@@ -18,20 +27,36 @@ public class InitDatabase {
         pathDbProperty = pathToPropertyFolder + "/db.properties";
     }
 
-    public static Connection getConnection() {
-        Properties properties = new Properties();
+    public static Connection getConnection() throws FileNotFoundException {
         try {
-            properties.load(new FileInputStream(pathDbProperty));
-            String dbUrl = properties.getProperty("db.url");
-            String dbUserName = properties.getProperty("db.userName");
-            String dbPassword = properties.getProperty("db.password");
-            String driverName = properties.getProperty("db.driverClassName");
+            if (!isChangedDbConfig) {
+                Properties properties = new Properties();
+                properties.load(new FileInputStream(pathDbProperty));
+                dbUrl = properties.getProperty("db.url");
+                dbUserName = properties.getProperty("db.userName");
+                dbPassword = properties.getProperty("db.password");
+                driverName = properties.getProperty("db.driverClassName");
+            }
 
             Class.forName(driverName);
+            logger.info("Success connecting to Database");
             return DriverManager.getConnection(dbUrl, dbUserName, dbPassword);
-        } catch (IOException | SQLException | ClassNotFoundException ioException) {
-            throw new IllegalStateException(ioException);
+        } catch (FileNotFoundException fileNotFoundException) {
+            logger.error(fileNotFoundException.getMessage(), fileNotFoundException);
+            throw new FileNotFoundException();
+        } catch (SQLException | IOException | ClassNotFoundException e) {
+            logger.error(e.getMessage(), e);
+            return null;
         }
+    }
+
+    static void setDbConfiguration(String dbUrl, String dbUserName,
+                                   String dbPassword, String driverName) {
+        isChangedDbConfig = true;
+        InitDatabase.dbUrl = dbUrl;
+        InitDatabase.dbUserName = dbUserName;
+        InitDatabase.dbPassword = dbPassword;
+        InitDatabase.driverName = driverName;
     }
 
     public static String getPathToPropertyFolder() {
@@ -40,5 +65,13 @@ public class InitDatabase {
 
     public static String getPathDbProperty() {
         return pathDbProperty;
+    }
+
+    public static void setPathDbProperty(String pathDbProperty) {
+        InitDatabase.pathDbProperty = pathDbProperty;
+    }
+
+    public static void setPathToPropertyFolder(String pathToPropertyFolder) {
+        InitDatabase.pathToPropertyFolder = pathToPropertyFolder;
     }
 }

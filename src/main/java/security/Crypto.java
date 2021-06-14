@@ -4,11 +4,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class Crypto {
     public static String hashPasswordBcrypt(String password) {
-        if (!password.isEmpty()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            return encoder.encode(password);
-        }
-        return "";
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
     }
 
     public static boolean matchesPasswords(String rawPassword, String encodedPassword) {

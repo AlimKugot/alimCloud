@@ -8,6 +8,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 @WebListener
@@ -16,7 +18,12 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        usersDao = new AtomicReference<>(new UsersDaoJdbcImpl(InitDatabase.getConnection()));
+
+        try {
+            usersDao = new AtomicReference<>(new UsersDaoJdbcImpl(InitDatabase.getConnection()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         final ServletContext servletContext = sce.getServletContext();
         servletContext.setAttribute("usersDao", usersDao);

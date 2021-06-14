@@ -10,23 +10,20 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UsersDaoTest {
-    FakeUsers fakeUsers;
-
-    private UsersDaoTest() {
-        fakeUsers = new FakeUsers();
-    }
+    FakeUsers fakeUsers = new FakeUsers();
+    UsersDao usersDao = fakeUsers.getUsersDao();
 
     @Test
     public void save() {
-        fakeUsers.getUsersDao().save(fakeUsers.getIvan());
-        assertFalse(fakeUsers.getUsersDao().
-                find(fakeUsers.getIVAN_EMAIL(), fakeUsers.getIVAN_PASSWORD()).isEmpty());
+        usersDao.save(fakeUsers.getIvan());
+        assertTrue(usersDao.find
+                (fakeUsers.getIVAN_EMAIL(), fakeUsers.getIVAN_PASSWORD()).isPresent());
     }
 
     @Test
     public void delete() {
-        fakeUsers.getUsersDao().delete(fakeUsers.getIVAN_EMAIL());
-        assertTrue(fakeUsers.getUsersDao().
+        usersDao.delete(fakeUsers.getIVAN_EMAIL());
+        assertTrue(usersDao.
                 find(fakeUsers.getJOHN_EMAIL(), fakeUsers.getIVAN_PASSWORD()).isEmpty());
     }
 
@@ -37,9 +34,9 @@ public class UsersDaoTest {
 
     @Test
     public void findAll() {
-        fakeUsers.getUsersDao().save(fakeUsers.getIvan());
-        fakeUsers.getUsersDao().save(fakeUsers.getJohn());
-        List<User> userList = fakeUsers.getUsersDao().findAll();
+        usersDao.save(fakeUsers.getIvan());
+        usersDao.save(fakeUsers.getJohn());
+        List<User> userList = usersDao.findAll();
         int countOfMatches = 0;
         for (User user : userList) {
             String userMail = user.getEmail();

@@ -32,6 +32,4 @@ public class CrudDaoTest {
         String query = "DELETE FROM users WHERE id = ?";
         assertEquals(query, daoSql.getSQL_DELETE_BY_ID());
     }
-
-
 }

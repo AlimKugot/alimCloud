@@ -2,8 +2,9 @@ package dao;
 
 import model.Role;
 import model.User;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import security.Crypto;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,12 +14,7 @@ import java.util.Optional;
 
 public class UsersDaoJdbcImpl extends CrudDaoJdbc<User> implements UsersDao {
     private final Connection connection;
-    private final static Logger logger;
-
-    static {
-        logger = Logger.getLogger(UsersDaoJdbcImpl.class);
-        logger.setLevel(Level.ERROR);
-    }
+    private final static Logger logger = LogManager.getLogger(UsersDaoJdbcImpl.class);
 
     public UsersDaoJdbcImpl(Connection connection) {
         this.connection = connection;
@@ -26,15 +22,17 @@ public class UsersDaoJdbcImpl extends CrudDaoJdbc<User> implements UsersDao {
 
 
     public boolean isExists(String email) {
+        boolean flag;
         try (PreparedStatement ps = connection.prepareStatement(SQL_SELECT_BY_EMAIL)) {
             ps.setString(1, email);
             ResultSet resultSet = ps.executeQuery();
+            flag = resultSet.next();
             resultSet.close();
-            return resultSet.next();
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage(), sqlException);
-            return false;
+            flag = false;
         }
+        return flag;
     }
 
     @Override
@@ -54,29 +52,30 @@ public class UsersDaoJdbcImpl extends CrudDaoJdbc<User> implements UsersDao {
             ps.setString(1, email);
             ResultSet resultSet = ps.executeQuery();
 
-            if (resultSet.next() &&
-                    resultSet.getString("password").equals(password)) {
+            if (resultSet.next()) {
+                String realHashedPassword = resultSet.getString("password");
+                if (Crypto.matchesPasswords(password, realHashedPassword)) {
+                    String userName = resultSet.getString("username");
+                    long id = resultSet.getLong("id");
+                    String roleString = resultSet.getString("role");
+                    Role role;
 
-                String userName = resultSet.getString("username");
-                long id = resultSet.getLong("id");
-                String roleString = resultSet.getString("role");
-                Role role;
+                    if (roleString.equals(Role.user.toString())) {
+                        role = Role.user;
+                    } else if (roleString.equals(Role.admin.toString())) {
+                        role = Role.admin;
+                    } else {
+                        role = Role.unknown;
+                    }
 
-                if (roleString.equals(Role.user.toString())) {
-                    role = Role.user;
-                } else if (roleString.equals(Role.admin.toString())) {
-                    role = Role.admin;
-                } else {
-                    role = Role.unknown;
+                    User user = new User.Builder()
+                            .id(id)
+                            .userName(userName)
+                            .email(email)
+                            .role(role)
+                            .build();
+                    return Optional.of(user);
                 }
-
-                User user = new User.Builder()
-                        .id(id)
-                        .userName(userName)
-                        .email(email)
-                        .role(role)
-                        .build();
-                return Optional.of(user);
             }
         } catch (SQLException sqlException) {
             logger.error(sqlException.getMessage(), sqlException);

@@ -24,8 +24,7 @@ public class UsersSql {
 
     public static String getSQL_INSERT_INTO_USERS() {
         //language=SQL
-        return "INSERT INTO users " +
-                    "(username, email, password, role) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
     }
 
     public static String getSQL_DELETE_BY_EMAIL() {
