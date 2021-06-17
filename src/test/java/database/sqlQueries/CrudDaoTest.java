@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+//todo: disgusting tests, change them
 public class CrudDaoTest {
     static CrudDaoSql daoSql;
     static String tableName = "users";
