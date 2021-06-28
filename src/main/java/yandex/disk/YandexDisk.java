@@ -1,4 +1,4 @@
-package yandexDisk;
+package yandex.disk;
 
 import database.InitDatabase;
 

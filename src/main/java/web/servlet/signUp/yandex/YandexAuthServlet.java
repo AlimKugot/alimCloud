@@ -1,6 +1,6 @@
 package web.servlet.signUp.yandex;
 
-import yandexDisk.YandexDisk;
+import yandex.disk.YandexDisk;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
